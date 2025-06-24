@@ -92,7 +92,7 @@
                 <li><strong>Varied Pre-treatments:</strong> Two primary pre-treatment paths were explored: purely mechanical refining (PFI mill) and enzymatic hydrolysis using an endoglucanase cocktail at different dosages (80 and 240 g/t).</li>
                 <li><strong>Fibrillation Conditions:</strong> The pre-treated pulps were defibrillated using a high-pressure homogenizer (HPH) at varying energy levels.</li>
             </ul>
-            <p>For each of these 140 experiments, a rich set of features was collected, including initial pulp chemical composition, process parameters (e.g., enzyme dosage, HPH energy), and final MNFC properties (e.g., cationic demand, transmittance, rheological parameters). The model was tasked with predicting the two key outputs that dictate performance: **Aspect Ratio** and **Nanofibrillation Yield**.</p>
+            <p>For each of these 140 experiments, a rich set of features was collected, including initial pulp chemical composition, process parameters (e.g., enzyme dosage, HPH energy), and final MNFC properties (e.g., cationic demand, transmittance, rheological parameters). The model was tasked with predicting the two key outputs that dictate performance: <strong>Aspect Ratio</strong> and <strong>Nanofibrillation Yield</strong>.</p>
             
             <h3>Modeling Approach: Training, Validation, and Testing</h3>
              <p>To build a robust model and avoid overfitting, the 140-point dataset was partitioned into three distinct subsets using a standard 70:15:15 ratio:</p>
@@ -105,7 +105,7 @@
 
         <section id="rf" class="section-bg-white fade-in-section mt-12">
             <h2>The Predictive Engine: Random Forest Regression</h2>
-            <p>The paper selects the <strong>Random Forest (RF)</strong> algorithm as its core predictive engine. An RF is a powerful **ensemble learning** method that constructs a multitude of Decision Trees at training time. To predict the Aspect Ratio of a new, unseen sample, each tree in the forest provides a prediction, and the final output of the RF is the average of these predictions. This approach is highly effective because it averages out the prediction errors of individual trees.</p>
+            <p>The paper selects the <strong>Random Forest (RF)</strong> algorithm as its core predictive engine. An RF is a powerful <strong>ensemble learning</strong> method that constructs a multitude of Decision Trees at training time. To predict the Aspect Ratio of a new, unseen sample, each tree in the forest provides a prediction, and the final output of the RF is the average of these predictions. This approach is highly effective because it averages out the prediction errors of individual trees.</p>
 
             <h3>The Estimator: A Single Decision Tree</h3>
             <p>Each individual tree, or <strong>estimator</strong>, in the forest learns to predict a property by creating a hierarchical structure of binary splits based on the input features. For this specific problem, an estimator might learn a path such as: "Is the Enzyme Dosage > 100 g/t?" → "Is HPH Energy > 500 kWh/kg?". Each terminal "leaf" of the tree contains a prediction based on the average of the training samples that fall into that specific partition. While intuitive, a single deep tree is a "high-variance, low-bias" model; it is highly prone to <strong>overfitting</strong> the training data and will not generalize well.</p>
@@ -121,7 +121,7 @@
             <div class="interactive-app">
                 <h3 class="text-center mt-0">App 1: The Ensemble Effect Visualizer</h3>
                 <p class="text-center text-sm text-slate-500 mb-6">This application demonstrates how averaging many over-fitted "weak" learners (single trees) results in a powerful, smooth prediction that captures the true underlying signal while ignoring the noise.</p>
-                <div class="w-full aspect-w-16 aspect-h-9 bg-sky-50 p-2 sm:p-4 rounded-lg border border-sky-100">
+                <div class="w-full h-80 sm:h-auto sm:aspect-w-16 sm:aspect-h-9 bg-sky-50 p-2 sm:p-4 rounded-lg border border-sky-100">
                     <canvas id="rfChart"></canvas>
                 </div>
                  <div class="text-center mt-6 flex flex-wrap justify-center items-center gap-4">
@@ -155,7 +155,7 @@
             <div class="interactive-app">
                  <h3 class="text-center mt-0">App 2: Bayesian Optimization of RF Hyperparameters</h3>
                  <p class="text-center text-sm text-slate-500 mb-6">This simulation demonstrates finding the optimal `n_estimators` to maximize R². The hidden curve represents the true performance. The optimizer intelligently samples the space to find the peak performance quickly.</p>
-                 <div class="w-full aspect-w-16 aspect-h-9 bg-sky-50 p-2 sm:p-4 rounded-lg border border-sky-100">
+                 <div class="w-full h-80 sm:h-auto sm:aspect-w-16 sm:aspect-h-9 bg-sky-50 p-2 sm:p-4 rounded-lg border border-sky-100">
                     <canvas id="bayesOptChart"></canvas>
                 </div>
                 <div class="text-center mt-6 flex flex-wrap justify-center items-center gap-4">
