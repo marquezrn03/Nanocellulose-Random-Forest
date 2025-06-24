@@ -111,10 +111,10 @@
             <p>Each individual tree, or <strong>estimator</strong>, in the forest learns to predict a property by creating a hierarchical structure of binary splits based on the input features. For this specific problem, an estimator might learn a path such as: "Is the Enzyme Dosage > 100 g/t?" → "Is HPH Energy > 500 kWh/kg?". Each terminal "leaf" of the tree contains a prediction based on the average of the training samples that fall into that specific partition. While intuitive, a single deep tree is a "high-variance, low-bias" model; it is highly prone to <strong>overfitting</strong> the training data and will not generalize well.</p>
 
             <h3>The Ensemble: From a Single Estimator to a Diverse Forest</h3>
-            <p>The Random Forest's ability to overcome the limitations of a single estimator stems from its enforcement of diversity among the trees. This is accomplished via two critical randomization processes:</p>
+            <p>The Random Forest ability to overcome the limitations of a single estimator stems from its enforcement of diversity among the trees. This is accomplished via two critical randomization processes:</p>
             <ul class="list-disc list-inside space-y-2 my-4 pl-4">
                 <li><strong>Bagging (Bootstrap Aggregating):</strong> Each estimator is trained on a random sample of the dataset, drawn *with replacement*. This ensures that each tree in the forest sees a slightly different permutation of the experimental data.</li>
-                <li><strong>Feature Randomness:</strong> At each decision point (node) in a tree, the algorithm is restricted to considering only a small, random subset of the input features. This crucial step prevents a few highly predictive features from dominating every tree's structure and forces the ensemble to discover more subtle and complex feature interactions.</li>
+                <li><strong>Feature Randomness:</strong> At each decision point (node) in a tree, the algorithm is restricted to considering only a small, random subset of the input features. This crucial step prevents a few highly predictive features from dominating every tree structure and forces the ensemble to discover more subtle and complex feature interactions.</li>
             </ul>
              <p>By averaging the predictions of these diverse, decorrelated trees, the final Random Forest model becomes a "low-variance, low-bias" predictor, exhibiting both high accuracy and strong generalization capacity.</p>
              
@@ -175,9 +175,9 @@
         
         <section id="results" class="section-bg-white fade-in-section mt-12">
             <h2>Scientific Insight Through Feature Importance</h2>
-            <p>A key advantage of the Random Forest model is its interpretability. After training, it is possible to quantify the relative importance of each input feature in making accurate predictions. This <strong>feature importance</strong> analysis moves beyond simple prediction and provides actionable scientific insight into the underlying process-property relationships in MNFC production.</p>
+            <p>A key advantage of the Random Forest model is its interpretability. After training, it is possible to quantify the relative importance of each input feature in making accurate predictions. This <strong>feature importance</strong> analysis moves beyond simple prediction and provides actionable scientific insight into the underlying structure-property-processing relationships in MNFC production.</p>
             <div class="info-box">
-                <h3 class="mt-0 text-sky-800">Key Findings from the Research:</h3>
+                <h3 class="mt-0 text-sky-800">Main Findings from the Research:</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                     <div>
                         <h4 class="font-semibold text-lg">For Predicting Aspect Ratio</h4>
@@ -190,7 +190,7 @@
                 </div>
             </div>
             <div class="interactive-app">
-                 <h3 class="text-center mt-0">Feature Importance Breakdown (Illustrative)</h3>
+                 <h3 class="text-center mt-0">Feature Importance Breakdown (Example)</h3>
                  <p class="text-center text-sm text-slate-500 mb-6">This chart illustrates the relative importance of different input features for the two target properties, based on the findings of the paper.</p>
                  <div class="w-full h-96 p-2 sm:p-4">
                     <canvas id="featureImportanceChart"></canvas>
@@ -203,7 +203,7 @@
     <footer class="mt-16 pt-8 pb-8 border-t bg-sky-900 text-sky-100">
         <div class="container mx-auto px-6 text-center">
              <p class="font-semibold">Interactive Guide based on the research of Giovana Signori-Iamin et al.</p>
-            <p class="text-sm text-sky-300">A demonstration of how machine learning can accelerate materials discovery.</p>
+            <p class="text-sm text-sky-300">A demonstration of how machine learning can accelerate materials discovery | Developed by ronald.marquez@udg.edu | Powered by Gemini 2.5 </p>
         </div>
     </footer>
 
