@@ -69,48 +69,48 @@
     <main class="container mx-auto px-6 py-10">
 
         <section id="intro" class="section-bg-white fade-in-section">
-            <h2>The Research Challenge: Predictive Control Over Hierarchical Structures</h2>
-            <p>The industrial-scale manufacturing of nanocellulose is a quintessential materials science challenge, predicated on our ability to precisely control its properties. The final properties of Micro-/Nanofibrillated Cellulose (MNFC)—such as the fibril <strong>Aspect Ratio</strong> and the overall <strong>Nanofibrillation Yield</strong>—are emergent phenomena. They arise from a complex, non-linear interplay of variables that span from the raw lignocellulosic feedstock's supramolecular architecture to the specific energy input during mechanical defibrillation. Exploring this high-dimensional parameter space through exhaustive physical experimentation is untenably slow and resource-intensive.</p>
+            <h2>The Research Challenge: Predictive Modeling for Nanocellulose Scale-Up</h2>
+            <p>The scale-up of nanocellulose production, a still challenging task, could benefit greatly from machine learning. The final properties of Micro-/Nanofibrillated Cellulose (MNFC)—such as <strong>Aspect Ratio</strong> and <strong>Nanofibrillation Yield</strong>—are not determined by a single variable, but arise from complex interactions within a high-dimensional parameter space. This space includes the lignocellulosic feedstock source, the type and intensity of pre-treatment, and the fibrillation energy. A purely empirical exploration of these parameters is prohibitive.</p>
             <blockquote>
-                The central thesis of the work by Signori-Iamin et al. is the application of machine learning to construct a predictive digital surrogate from a sparse, heterogeneous experimental dataset. This allows for in-silico exploration of the process-property landscape, accelerating materials discovery and de-risking scale-up.
+                This work demonstrates the application of machine learning to construct a predictive model from sparse experimental data. The aim is to create a digital surrogate of the production process, enabling the rapid in-silico exploration of process-property relationships to guide and accelerate materials discovery.
             </blockquote>
-            <p>This document provides a high-level, narrative exploration of the core machine learning workflow employed in the paper. We will deconstruct the methodology step-by-step, from the dataset and modeling approach to the performance evaluation and optimization strategy, providing a rigorous, PhD-level understanding of how machine learning was applied to solve this materials discovery challenge.</p>
+            <p>This document provides a high-level, narrative exploration of the core machine learning workflow employed in the paper by Signori-Iamin et al. We will deconstruct the methodology step-by-step, from the dataset and modeling approach to the performance evaluation and optimization strategy, providing a rigorous understanding of the study.</p>
         </section>
 
         <section id="methodology" class="section-bg-white fade-in-section mt-12">
-            <h2>The Experimental & Modeling Framework</h2>
+            <h2>The Experimental and Modeling Framework</h2>
             <h3>The Dataset: A Foundation of Diverse Experiments</h3>
-            <p>The foundation of this study is a comprehensive dataset comprising **140 experimental datapoints**. This dataset is intentionally heterogeneous, reflecting the real-world complexity of MNFC production. It includes:</p>
+            <p>The foundation of the study is a dataset comprising **140 experimental datapoints**. This dataset is intentionally heterogeneous, collected from multiple experiments to ensure the resulting model is robust and generalizable across a wide range of conditions. The dataset includes:</p>
             <ul class="list-disc list-inside space-y-2 my-4 pl-4">
-                <li><strong>Diverse Feedstocks:</strong> Lignocellulosic pulps from a wide range of sources, including non-woody plants (hemp, sisal), softwoods (pine), hardwoods (eucalyptus), and recycled pulp.</li>
-                <li><strong>Varied Pre-treatments:</strong> Two primary pre-treatment paths were explored: purely mechanical refining (PFI mill) and enzymatic hydrolysis using an endoglucanase cocktail at different dosages (80 and 240 g/t).</li>
-                <li><strong>Fibrillation Conditions:</strong> The pre-treated pulps were defibrillated using a high-pressure homogenizer (HPH) at varying energy levels.</li>
+                <li><strong>Diverse Feedstocks:</strong> A range of lignocellulosic pulps, including non-woody to woody plants (softwoods and hardwoods), and a recycled pulp.</li>
+                <li><strong>Varied Pre-treatments:</strong> Two primary pre-treatment paths were explored: purely mechanical refining in a PFI mill and enzymatic hydrolysis using an endoglucanase cocktail at two different dosages (80 and 240 g/t).</li>
+                <li><strong>Fibrillation Conditions:</strong> The pre-treated pulps were defibrillated using a high-pressure homogenizer (HPH) at five distinct levels of specific energy input.</li>
             </ul>
-            <p>For each of these 140 experiments, a rich set of features was collected, including initial pulp chemical composition, process parameters (e.g., enzyme dosage, HPH energy), and final MNFC properties (e.g., cationic demand, transmittance, rheological parameters). The model was tasked with predicting the two key outputs that dictate performance: **Aspect Ratio** and **Nanofibrillation Yield**.</p>
+            <p>For each experiment, a comprehensive set of features was recorded, including initial pulp chemical composition, process parameters, and final MNFC properties like cationic demand and rheological parameters. The model was tasked with predicting two outputs of interest: <strong>Aspect Ratio</strong> and **Nanofibrillation Yield**.</p>
             
             <h3>Modeling Approach: Training, Validation, and Testing</h3>
-             <p>To build a robust model and avoid overfitting, the 140-point dataset was partitioned into three distinct subsets using a standard 70:15:15 ratio:</p>
+             <p>For better reliability in the prediction and generalization capacity of the models, the 140-point dataset was partitioned into three subsets using a 70:15:15 ratio:</p>
              <ul class="list-disc list-inside space-y-2 my-4 pl-4">
-                <li><strong>Training Set (70%):</strong> The largest portion, used for the model to learn the underlying relationships between the input features and the target outputs.</li>
-                <li><strong>Validation Set (15%):</strong> An independent, "unseen" dataset used during the development phase to tune the model's hyperparameters. By evaluating performance on data it wasn't trained on, we can check for overfitting and make adjustments.</li>
-                <li><strong>Test Set (15%):</strong> A final, completely "held-out" set of data used only once, after all training and tuning is complete, to provide an unbiased evaluation of the final model's predictive performance and generalization capacity.</li>
+                <li><strong>Training Set (70%):</strong> The largest portion, used to train the model. The algorithm learns the underlying process-property relationships from this data.</li>
+                <li><strong>Validation Set (15%):</strong> An independent dataset used during development to tune the model's hyperparameters and check for overfitting.</li>
+                <li><strong>Test Set (15%):</strong> A final, held-out dataset used only once to provide an unbiased evaluation of the final model's predictive performance.</li>
             </ul>
         </section>
 
         <section id="rf" class="section-bg-white fade-in-section mt-12">
             <h2>The Predictive Engine: Random Forest Regression</h2>
-            <p>The paper selects the <strong>Random Forest (RF)</strong> algorithm as its core predictive engine. An RF is a powerful **ensemble learning** method that constructs a multitude of Decision Trees at training time. To predict the Aspect Ratio of a new, unseen sample, each tree in the forest provides a prediction, and the final output of the RF is the average of these predictions. This approach is highly effective because it averages out the prediction errors of individual trees.</p>
+            <p>The paper selects the <strong>Random Forest (RF)</strong> algorithm, a supervised ensemble learning method, as its core predictive engine. An RF constructs a multitude of Decision Trees at training time. To make a prediction for a new sample, each tree in the forest provides an output, and the final prediction of the RF is the average of these individual outputs. This ensemble approach is highly effective at reducing prediction variance and improving accuracy.</p>
 
-            <h3>The Estimator: A Single Decision Tree</h3>
-            <p>Each individual tree, or <strong>estimator</strong>, in the forest learns to predict a property by creating a hierarchical structure of binary splits based on the input features. For this specific problem, an estimator might learn a path such as: "Is the Enzyme Dosage > 100 g/t?" → "Is HPH Energy > 500 kWh/kg?". Each terminal "leaf" of the tree contains a prediction based on the average of the training samples that fall into that specific partition. While intuitive, a single deep tree is a "high-variance, low-bias" model; it is highly prone to <strong>overfitting</strong> the training data and will not generalize well.</p>
+            <h3>The Base Estimator: A Single Decision Tree</h3>
+            <p>The fundamental building block of an RF is the decision tree. This model recursively partitions the data by learning a hierarchy of binary rules from the input features. While intuitive, a single, deep decision tree is a "high-variance, low-bias" model; it is highly susceptible to **overfitting** the training data and often fails to generalize well to unseen samples.</p>
 
             <h3>The Ensemble: From a Single Estimator to a Diverse Forest</h3>
-            <p>The Random Forest's ability to overcome the limitations of a single estimator stems from its enforcement of diversity among the trees. This is accomplished via two critical randomization processes:</p>
+            <p>The Random Forest mitigates the high variance of a single estimator by averaging the predictions of a large number of decorrelated trees. This crucial decorrelation is achieved through two randomization techniques:</p>
             <ul class="list-disc list-inside space-y-2 my-4 pl-4">
-                <li><strong>Bagging (Bootstrap Aggregating):</strong> Each estimator is trained on a random sample of the dataset, drawn *with replacement*. This ensures that each tree in the forest sees a slightly different permutation of the experimental data.</li>
-                <li><strong>Feature Randomness:</strong> At each decision point (node) in a tree, the algorithm is restricted to considering only a small, random subset of the input features. This crucial step prevents a few highly predictive features from dominating every tree's structure and forces the ensemble to discover more subtle and complex feature interactions.</li>
+                <li><strong>Bagging (Bootstrap Aggregating):</strong> Each decision tree is trained on a different random sample of the training data, drawn with replacement. This ensures each tree has a unique perspective on the data structure.</li>
+                <li><strong>Feature Randomness:</strong> At each node within a tree, when determining the optimal split, the algorithm is restricted to considering only a small, random subset of the input features. This prevents a few dominant features from controlling the structure of every tree.</li>
             </ul>
-             <p>By averaging the predictions of these diverse, decorrelated trees, the Random Forest produces a final prediction that is "low-variance, low-bias," the hallmark of a robust and generalizable model.</p>
+             <p>By aggregating the outputs of these diverse estimators, the final Random Forest model becomes a "low-variance, low-bias" predictor, exhibiting both high accuracy and strong generalization capacity.</p>
              
             <div class="interactive-app">
                 <h3 class="text-center mt-0">App 1: The Ensemble Effect Visualizer</h3>
@@ -132,19 +132,19 @@
              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                 <div class="info-box">
                     <h4 class="font-semibold text-lg text-sky-800 mt-0">R² Score (Coefficient of Determination)</h4>
-                    <p class="text-sm">Represents the proportion of variance in the dependent variable that can be predicted from the independent variables. An R² of 0.95 signifies that 95% of the variability in the experimental outcomes is captured by the model. It is a primary measure of goodness-of-fit.</p>
+                    <p class="text-sm">Represents the proportion of variance in the dependent variable that is predictable from the independent variables. An R² of 0.95, as achieved for the validation set, signifies that 95% of the variability in the experimental outcomes is captured by the model. It is a primary measure of goodness-of-fit.</p>
                 </div>
                 <div class="info-box">
                     <h4 class="font-semibold text-lg text-sky-800 mt-0">RMSE (Root Mean Square Error)</h4>
-                    <p class="text-sm">Measures the standard deviation of the prediction errors (residuals). By squaring errors before averaging, it penalizes large errors more heavily than small ones. It is useful for understanding the typical magnitude of error in the units of the predicted property.</p>
+                    <p class="text-sm">Measures the standard deviation of the prediction errors (residuals). By squaring errors before averaging, it penalizes large errors more heavily. It is useful for understanding the typical magnitude of error in the units of the predicted property (e.g., an RMSE of 12.46 for Aspect Ratio).</p>
                 </div>
             </div>
         </section>
 
         <section id="bo" class="section-bg-white fade-in-section mt-12">
             <h2>The Optimization Strategy: Bayesian Optimization of Hyperparameters</h2>
-            <p>The performance of the Random Forest is contingent on its <strong>hyperparameters</strong>—settings like `n_estimators` (the number of trees) and `max_depth` (the maximum depth of each tree). Finding the optimal combination of these hyperparameters is a "black-box" optimization problem, as the relationship between hyperparameters and model performance is unknown a priori. The paper employs <strong>Bayesian Optimization</strong> for this task.</p>
-            <p>This technique builds a <strong>probabilistic surrogate model</strong> of the objective function (e.g., R² score as a function of hyperparameters). An <strong>acquisition function</strong> then uses this surrogate to intelligently select the next set of hyperparameters to evaluate, balancing <strong>exploitation</strong> (testing in areas the model predicts are optimal) and <strong>exploration</strong> (testing in areas of high uncertainty). This allows the algorithm to converge on optimal settings with far fewer evaluations than brute-force methods, saving significant computational time.</p>
+            <p>The performance of the Random Forest is contingent on its **hyperparameters**—settings like `n_estimators` (the number of trees) and `max_depth` (the maximum depth of each tree). Finding the optimal combination of these hyperparameters is a "black-box" optimization problem, as the relationship between hyperparameters and model performance is unknown a priori. The paper employs **Bayesian Optimization** for this task.</p>
+            <p>This technique builds a **probabilistic surrogate model** of the objective function (e.g., R² score as a function of hyperparameters). An **acquisition function** then uses this surrogate to intelligently select the next set of hyperparameters to evaluate, balancing **exploitation** (testing in areas the model predicts are optimal) and **exploration** (testing in areas of high uncertainty). This allows the algorithm to converge on optimal settings with far fewer evaluations than brute-force methods, saving significant computational time.</p>
             
             <div class="interactive-app">
                  <h3 class="text-center mt-0">App 2: Bayesian Optimization of RF Hyperparameters</h3>
@@ -169,7 +169,7 @@
         
         <section id="results" class="section-bg-white fade-in-section mt-12">
             <h2>Scientific Insight Through Feature Importance</h2>
-            <p>A key advantage of the Random Forest model is its interpretability. After training, it is possible to quantify the relative importance of each input feature in making accurate predictions. This **feature importance** analysis moves beyond simple prediction and provides actionable scientific insight into the underlying process-property relationships in MNFC production.</p>
+            <p>A significant outcome of the trained Random Forest model is the ability to rank the input features by their predictive power. This **feature importance** analysis moves beyond simple prediction and provides actionable scientific insight into the underlying process-property relationships in MNFC production.</p>
             <div class="info-box">
                 <h3 class="mt-0 text-sky-800">Key Findings from the Research:</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
