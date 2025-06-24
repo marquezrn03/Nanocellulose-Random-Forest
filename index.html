@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI for Materials Discovery | An Interactive Exploration of a Predictive Workflow for Nanocellulose</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f9ff; /* sky-50 */
+            --text-color-main: #0c4a6e; /* sky-800 */
+            --text-color-header: #082f49; /* sky-950 */
+            --text-color-accent: #075985; /* sky-700 */
+            --text-color-subtle: #0ea5e9; /* sky-500 */
+            --border-color-light: #e0f2fe; /* sky-100 */
+            --border-color-medium: #bae6fd; /* sky-200 */
+            --border-color-dark: #7dd3fc; /* sky-300 */
+            --accent-color: #38bdf8; /* sky-400 */
+            --highlight-bg: #e0f2fe; /* sky-100 */
+            --header-grad-from: #0ea5e9; /* sky-500 */
+            --header-grad-to: #0284c7; /* sky-600 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            color: var(--text-color-main);
+            background-color: var(--bg-color);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-section {
+            opacity: 0;
+            animation: fadeIn 0.7s ease-out forwards;
+        }
+        h1, h2, h3 { color: var(--text-color-header); font-weight: 700; }
+        h1 { font-size: 2.5rem; }
+        h2 { border-bottom: 2px solid var(--border-color-dark); padding-bottom: 0.75rem; margin-bottom: 1.5rem; margin-top: 3rem; font-size: 1.75rem; }
+        h3 { font-size: 1.35rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-color-accent); }
+        p, li { color: var(--text-color-main); line-height: 1.8; margin-bottom: 1rem; font-size: 1.05rem; }
+        strong { color: var(--text-color-accent); font-weight: 600; }
+        blockquote { border-left: 4px solid var(--accent-color); padding: 1rem 1.5rem; margin: 1.5rem 0; font-style: italic; color: var(--text-color-accent); background-color: var(--highlight-bg); border-radius: 0.25rem; }
+        .section-bg-white { background-color: #ffffff; padding: 2.5rem; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03); }
+        .interactive-app { background-color: #ffffff; border: 1px solid var(--border-color-light); padding: 2rem; border-radius: 0.5rem; margin-top: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        button { background-color: var(--accent-color); color: var(--text-color-header); padding: 0.6rem 1.25rem; border-radius: 0.375rem; font-weight: 600; transition: all 0.2s ease-in-out; border: 1px solid var(--border-color-dark); cursor: pointer;}
+        button:hover { background-color: var(--text-color-subtle); color: white; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        button:disabled { background-color: #e5e7eb; color: #9ca3af; border-color: #d1d5db; cursor: not-allowed; transform: none; box-shadow: none;}
+        .info-box { background-color: var(--highlight-bg); border-left: 4px solid var(--accent-color); padding: 1.5rem; margin: 1rem 0; border-radius: 0.25rem; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-gradient-to-r from-[var(--header-grad-from)] to-[var(--header-grad-to)] text-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-6">
+            <p class="text-sm font-semibold tracking-wider uppercase text-sky-100">An Interactive Exploration for Materials Discovery</p>
+            <h1 class="text-4xl font-bold mt-2">Bayesian-Optimized Random Forest Prediction of Key Properties of Micro-/Nanofibrillated Cellulose</h1>
+            <p class="text-lg font-light mt-2">
+                By Giovana Signori-Iamin, et al. | Industrial Crops and Products, 2023 | 
+                <a href="https://doi.org/10.1016/j.indcrop.2023.117719" target="_blank" class="underline hover:text-sky-200 transition-colors">https://doi.org/10.1016/j.indcrop.2023.117719</a>
+            </p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-10">
+
+        <section id="intro" class="section-bg-white fade-in-section">
+            <h2>The Research Challenge: Predictive Control Over Hierarchical Structures</h2>
+            <p>The industrial-scale manufacturing of nanocellulose is a quintessential materials science challenge, predicated on our ability to precisely control its properties. The final properties of Micro-/Nanofibrillated Cellulose (MNFC)—such as the fibril <strong>Aspect Ratio</strong> and the overall <strong>Nanofibrillation Yield</strong>—are emergent phenomena. They arise from a complex, non-linear interplay of variables that span from the raw lignocellulosic feedstock's supramolecular architecture to the specific energy input during mechanical defibrillation. Exploring this high-dimensional parameter space through exhaustive physical experimentation is untenably slow and resource-intensive.</p>
+            <blockquote>
+                The central thesis of the work by Signori-Iamin et al. is the application of machine learning to construct a predictive digital surrogate from a sparse, heterogeneous experimental dataset. This allows for in-silico exploration of the process-property landscape, accelerating materials discovery and de-risking scale-up.
+            </blockquote>
+            <p>This document provides a high-level, narrative exploration of the core machine learning workflow employed in the paper. We will deconstruct the methodology step-by-step, from the dataset and modeling approach to the performance evaluation and optimization strategy, providing a rigorous, PhD-level understanding of how machine learning was applied to solve this materials discovery challenge.</p>
+        </section>
+
+        <section id="methodology" class="section-bg-white fade-in-section mt-12">
+            <h2>The Experimental & Modeling Framework</h2>
+            <h3>The Dataset: A Foundation of Diverse Experiments</h3>
+            <p>The foundation of this study is a comprehensive dataset comprising **140 experimental datapoints**. This dataset is intentionally heterogeneous, reflecting the real-world complexity of MNFC production. It includes:</p>
+            <ul class="list-disc list-inside space-y-2 my-4 pl-4">
+                <li><strong>Diverse Feedstocks:</strong> Lignocellulosic pulps from a wide range of sources, including non-woody plants (hemp, sisal), softwoods (pine), hardwoods (eucalyptus), and recycled pulp.</li>
+                <li><strong>Varied Pre-treatments:</strong> Two primary pre-treatment paths were explored: purely mechanical refining (PFI mill) and enzymatic hydrolysis using an endoglucanase cocktail at different dosages (80 and 240 g/t).</li>
+                <li><strong>Fibrillation Conditions:</strong> The pre-treated pulps were defibrillated using a high-pressure homogenizer (HPH) at varying energy levels.</li>
+            </ul>
+            <p>For each of these 140 experiments, a rich set of features was collected, including initial pulp chemical composition, process parameters (e.g., enzyme dosage, HPH energy), and final MNFC properties (e.g., cationic demand, transmittance, rheological parameters). The model was tasked with predicting the two key outputs that dictate performance: **Aspect Ratio** and **Nanofibrillation Yield**.</p>
+            
+            <h3>Modeling Approach: Training, Validation, and Testing</h3>
+             <p>To build a robust model and avoid overfitting, the 140-point dataset was partitioned into three distinct subsets using a standard 70:15:15 ratio:</p>
+             <ul class="list-disc list-inside space-y-2 my-4 pl-4">
+                <li><strong>Training Set (70%):</strong> The largest portion, used for the model to learn the underlying relationships between the input features and the target outputs.</li>
+                <li><strong>Validation Set (15%):</strong> An independent, "unseen" dataset used during the development phase to tune the model's hyperparameters. By evaluating performance on data it wasn't trained on, we can check for overfitting and make adjustments.</li>
+                <li><strong>Test Set (15%):</strong> A final, completely "held-out" set of data used only once, after all training and tuning is complete, to provide an unbiased evaluation of the final model's predictive performance and generalization capacity.</li>
+            </ul>
+        </section>
+
+        <section id="rf" class="section-bg-white fade-in-section mt-12">
+            <h2>The Predictive Engine: Random Forest Regression</h2>
+            <p>The paper selects the <strong>Random Forest (RF)</strong> algorithm as its core predictive engine. An RF is a powerful **ensemble learning** method that constructs a multitude of Decision Trees at training time. To predict the Aspect Ratio of a new, unseen sample, each tree in the forest provides a prediction, and the final output of the RF is the average of these predictions. This approach is highly effective because it averages out the prediction errors of individual trees.</p>
+
+            <h3>The Estimator: A Single Decision Tree</h3>
+            <p>Each individual tree, or <strong>estimator</strong>, in the forest learns to predict a property by creating a hierarchical structure of binary splits based on the input features. For this specific problem, an estimator might learn a path such as: "Is the Enzyme Dosage > 100 g/t?" → "Is HPH Energy > 500 kWh/kg?". Each terminal "leaf" of the tree contains a prediction based on the average of the training samples that fall into that specific partition. While intuitive, a single deep tree is a "high-variance, low-bias" model; it is highly prone to <strong>overfitting</strong> the training data and will not generalize well.</p>
+
+            <h3>The Ensemble: From a Single Estimator to a Diverse Forest</h3>
+            <p>The Random Forest's ability to overcome the limitations of a single estimator stems from its enforcement of diversity among the trees. This is accomplished via two critical randomization processes:</p>
+            <ul class="list-disc list-inside space-y-2 my-4 pl-4">
+                <li><strong>Bagging (Bootstrap Aggregating):</strong> Each estimator is trained on a random sample of the dataset, drawn *with replacement*. This ensures that each tree in the forest sees a slightly different permutation of the experimental data.</li>
+                <li><strong>Feature Randomness:</strong> At each decision point (node) in a tree, the algorithm is restricted to considering only a small, random subset of the input features. This crucial step prevents a few highly predictive features from dominating every tree's structure and forces the ensemble to discover more subtle and complex feature interactions.</li>
+            </ul>
+             <p>By averaging the predictions of these diverse, decorrelated trees, the Random Forest produces a final prediction that is "low-variance, low-bias," the hallmark of a robust and generalizable model.</p>
+             
+            <div class="interactive-app">
+                <h3 class="text-center mt-0">App 1: The Ensemble Effect Visualizer</h3>
+                <p class="text-center text-sm text-slate-500 mb-6">This application demonstrates how averaging many over-fitted "weak" learners (single trees) results in a powerful, smooth prediction that captures the true underlying signal while ignoring the noise.</p>
+                <div class="w-full aspect-video bg-sky-50 p-4 rounded-lg border border-sky-100">
+                    <canvas id="rfChart"></canvas>
+                </div>
+                 <div class="text-center mt-6 flex justify-center items-center gap-6">
+                    <button id="addTreeBtn">Add Single Decision Tree</button>
+                    <button id="showForestBtn" class="bg-emerald-500 text-white" disabled>Show Random Forest (Average)</button>
+                    <button id="resetRfBtn" class="bg-slate-400 text-white">Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="metrics" class="section-bg-white fade-in-section mt-12">
+            <h2>Evaluating Model Performance: A Lexicon of Metrics</h2>
+            <p>To quantitatively assess the model's accuracy, the paper utilizes several standard statistical metrics. A clear understanding of these is essential for interpreting the validity of the results.</p>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                <div class="info-box">
+                    <h4 class="font-semibold text-lg text-sky-800 mt-0">R² Score (Coefficient of Determination)</h4>
+                    <p class="text-sm">Represents the proportion of variance in the dependent variable that can be predicted from the independent variables. An R² of 0.95 signifies that 95% of the variability in the experimental outcomes is captured by the model. It is a primary measure of goodness-of-fit.</p>
+                </div>
+                <div class="info-box">
+                    <h4 class="font-semibold text-lg text-sky-800 mt-0">RMSE (Root Mean Square Error)</h4>
+                    <p class="text-sm">Measures the standard deviation of the prediction errors (residuals). By squaring errors before averaging, it penalizes large errors more heavily than small ones. It is useful for understanding the typical magnitude of error in the units of the predicted property.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="bo" class="section-bg-white fade-in-section mt-12">
+            <h2>The Optimization Strategy: Bayesian Optimization of Hyperparameters</h2>
+            <p>The performance of the Random Forest is contingent on its <strong>hyperparameters</strong>—settings like `n_estimators` (the number of trees) and `max_depth` (the maximum depth of each tree). Finding the optimal combination of these hyperparameters is a "black-box" optimization problem, as the relationship between hyperparameters and model performance is unknown a priori. The paper employs <strong>Bayesian Optimization</strong> for this task.</p>
+            <p>This technique builds a <strong>probabilistic surrogate model</strong> of the objective function (e.g., R² score as a function of hyperparameters). An <strong>acquisition function</strong> then uses this surrogate to intelligently select the next set of hyperparameters to evaluate, balancing <strong>exploitation</strong> (testing in areas the model predicts are optimal) and <strong>exploration</strong> (testing in areas of high uncertainty). This allows the algorithm to converge on optimal settings with far fewer evaluations than brute-force methods, saving significant computational time.</p>
+            
+            <div class="interactive-app">
+                 <h3 class="text-center mt-0">App 2: Bayesian Optimization of RF Hyperparameters</h3>
+                 <p class="text-center text-sm text-slate-500 mb-6">This simulation demonstrates finding the optimal `n_estimators` to maximize R². The hidden curve represents the true performance. The optimizer intelligently samples the space to find the peak performance quickly.</p>
+                 <div class="w-full aspect-video bg-sky-50 p-4 rounded-lg border border-sky-100">
+                    <canvas id="bayesOptChart"></canvas>
+                </div>
+                <div class="text-center mt-6 flex justify-center items-center gap-6">
+                    <button id="runBoBtn">Run Next Evaluation</button>
+                    <button id="resetBoBtn" class="bg-slate-400 text-white">Reset</button>
+                     <div class="text-center font-mono p-2 rounded bg-slate-100">
+                        <div class="text-xs text-slate-500">Evaluations</div>
+                        <div id="boTrialCounter" class="text-xl font-bold text-slate-700">0</div>
+                    </div>
+                     <div class="text-center font-mono p-2 rounded bg-sky-100">
+                        <div class="text-xs text-sky-500">Best R² Found</div>
+                        <div id="boBestScore" class="text-xl font-bold text-sky-600">N/A</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="results" class="section-bg-white fade-in-section mt-12">
+            <h2>Scientific Insight Through Feature Importance</h2>
+            <p>A key advantage of the Random Forest model is its interpretability. After training, it is possible to quantify the relative importance of each input feature in making accurate predictions. This **feature importance** analysis moves beyond simple prediction and provides actionable scientific insight into the underlying process-property relationships in MNFC production.</p>
+            <div class="info-box">
+                <h3 class="mt-0 text-sky-800">Key Findings from the Research:</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                    <div>
+                        <h4 class="font-semibold text-lg">For Predicting Aspect Ratio</h4>
+                        <p class="text-sm">The model identified <strong>Enzyme Dosage</strong> as the most influential feature. This quantitatively confirms that the choice and intensity of the enzymatic pre-treatment have the most significant influence on the final morphology of the nanofibrils.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg">For Predicting Nanofibrillation Yield</h4>
+                        <p class="text-sm">In stark contrast, <strong>Transmittance at 600 nm</strong> was overwhelmingly the most important feature for predicting yield, accounting for nearly 90% of the model's decision-making. This suggests yield is primarily a function of the suspension's colloidal stability and particle size distribution, which can be rapidly assessed via optical methods.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="interactive-app">
+                 <h3 class="text-center mt-0">Feature Importance Breakdown (Illustrative)</h3>
+                 <p class="text-center text-sm text-slate-500 mb-6">This chart illustrates the relative importance of different input features for the two target properties, based on the findings of the paper.</p>
+                 <canvas id="featureImportanceChart"></canvas>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-16 pt-8 pb-8 border-t bg-sky-900 text-sky-100">
+        <div class="container mx-auto px-6 text-center">
+             <p class="font-semibold">Interactive Guide based on the research of Giovana Signori-Iamin et al.</p>
+            <p class="text-sm text-sky-300">A demonstration of how machine learning can accelerate materials discovery.</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let chartObjects = {};
+
+        function initializeAllCharts() {
+            initializeRfChart();
+            initializeBoChart();
+            initializeFeatureImportanceChart();
+        }
+
+        // --- RF CHART LOGIC ---
+        function initializeRfChart() {
+            if (chartObjects.rf) chartObjects.rf.destroy();
+            const rfCtx = document.getElementById('rfChart').getContext('2d');
+            const rfXLabels = Array.from({length: 51}, (_, i) => i * 10);
+            const trueRfFn = x => 20 + 70 * Math.exp(-Math.pow(x - 300, 2) / 40000);
+            const trueRfData = rfXLabels.map(trueRfFn);
+            const noisyDataPoints = rfXLabels.map(x => ({x: x, y: trueRfFn(x) + (Math.random() - 0.5) * 20}));
+            
+            chartObjects.singleTreePredictions = [];
+            document.getElementById('addTreeBtn').disabled = false;
+            document.getElementById('showForestBtn').disabled = true;
+
+            chartObjects.rf = new Chart(rfCtx, {
+                type: 'line',
+                data: {
+                    labels: rfXLabels,
+                    datasets: [{
+                        type: 'scatter', label: 'Sample Data Points', data: noisyDataPoints,
+                        backgroundColor: 'rgba(100, 116, 139, 0.7)', pointRadius: 4
+                    },{
+                        label: 'True Underlying Signal', data: trueRfData,
+                        borderColor: 'rgb(236, 72, 153)', borderWidth: 3, pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { title: { text: 'Individual Trees vs. The Forest', display: true, font: { size: 14 } }, legend: { position: 'bottom' } },
+                    scales: { x: { title: { display: true, text: 'Input Feature' } }, y: { title: { display: true, text: 'Output Prediction' } } }
+                }
+            });
+        }
+        document.getElementById('addTreeBtn').addEventListener('click', () => {
+            let treePrediction = [], lastY = 50;
+            const noisyDataPoints = chartObjects.rf.data.datasets[0].data;
+            for (let i = 0; i < chartObjects.rf.data.labels.length; i++) {
+                lastY = Math.random() < 0.2 ? noisyDataPoints[i].y : lastY;
+                treePrediction.push(lastY);
+            }
+            chartObjects.singleTreePredictions.push(treePrediction);
+            chartObjects.rf.data.datasets.push({ label: `Tree ${chartObjects.singleTreePredictions.length}`, data: treePrediction, borderColor: `rgba(20, 184, 166, 0.3)`, borderWidth: 1.5, pointRadius: 0 });
+            chartObjects.rf.update();
+            if (chartObjects.singleTreePredictions.length >= 2) document.getElementById('showForestBtn').disabled = false;
+            if (chartObjects.singleTreePredictions.length >= 20) document.getElementById('addTreeBtn').disabled = true;
+        });
+        document.getElementById('showForestBtn').addEventListener('click', () => {
+            const forestPrediction = chartObjects.rf.data.labels.map((_, i) => chartObjects.singleTreePredictions.reduce((sum, tree) => sum + tree[i], 0) / chartObjects.singleTreePredictions.length);
+            chartObjects.rf.data.datasets.push({ label: 'Random Forest (Average)', data: forestPrediction, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.2)', borderWidth: 4, pointRadius: 0, tension: 0.1, fill: true });
+            chartObjects.rf.update();
+            document.getElementById('showForestBtn').disabled = true;
+        });
+        document.getElementById('resetRfBtn').addEventListener('click', initializeRfChart);
+
+        // --- BAYESIAN OPTIMIZATION LOGIC ---
+        let boObserved = [], boTrialCount = 0, boBest = { x: null, y: -Infinity };
+        function initializeBoChart() {
+            if (chartObjects.bo) chartObjects.bo.destroy();
+            const boCtx = document.getElementById('bayesOptChart').getContext('2d');
+            const boXLabels = Array.from({length: 15}, (_, i) => (i + 1) * 10);
+            chartObjects.bo = new Chart(boCtx, { type: 'line', data: { labels: boXLabels, datasets: [] }, options: { responsive: true, maintainAspectRatio: false, plugins: { title: { text: 'Model Accuracy (R²) vs. n_estimators', display: true, font: { size: 14 } }, legend: { position: 'bottom' } }, scales: { x: { title: { display: true, text: 'Hyperparameter: n_estimators' } }, y: { title: { display: true, text: 'Model R² Score' }, min: 0.7, max: 1.0 } } } });
+            boObserved = []; boTrialCount = 0; boBest = { x: null, y: -Infinity }; document.getElementById('runBoBtn').disabled = false; updateBoChart();
+        }
+        function calculateSurrogate(xGrid, points, initialGuess, uncertaintyFactor){let mean=[],uncertainty=[];let sortedPoints=[...points].sort((a,b)=>a.x-b.x);for(const x of xGrid){let p_before=null,p_after=null;for(const p of sortedPoints){if(p.x<=x)p_before=p;if(p.x>x&&!p_after)p_after=p;}let current_mean;if(p_before&&p_after){let w=(x-p_before.x)/(p_after.x-p_before.x);current_mean=p_before.y*(1-w)+p_after.y*w;}else if(p_before)current_mean=p_before.y;else if(p_after)current_mean=p_after.y;else current_mean=initialGuess;mean.push(current_mean);let minDist=points.length>0?Math.min(...points.map(p=>Math.abs(p.x-x))):Infinity;let current_uncertainty=uncertaintyFactor*(1-Math.exp(-.0005*minDist*minDist));uncertainty.push(current_uncertainty);}return{mean,uncertainty};}
+        function updateBoChart() {
+            const boTrialCounterEl = document.getElementById('boTrialCounter');
+            const boBestScoreEl = document.getElementById('boBestScore');
+            if (boObserved.length > 10) document.getElementById('runBoBtn').disabled = true;
+            boTrialCounterEl.textContent = boTrialCount; boBestScoreEl.textContent = boBest.y > -Infinity ? boBest.y.toFixed(3) : 'N/A';
+            const trueBoFn = x => 0.85 + 0.13 * Math.exp(-Math.pow(x - 80, 2) / 3000);
+            chartObjects.bo.data.datasets = [{ label: 'True Performance (Hidden)', data: chartObjects.bo.data.labels.map(trueBoFn), borderColor: 'rgba(100, 116, 139, 0.5)', borderWidth: 2, borderDash: [5, 5], pointRadius: 0 }];
+            if (boObserved.length > 0) {
+                const { mean, uncertainty } = calculateSurrogate(chartObjects.bo.data.labels, boObserved, 0.8, 0.2);
+                chartObjects.bo.data.datasets.push({ label: 'Model Uncertainty', data: mean.map((m, i) => m + uncertainty[i]), fill: '+1', backgroundColor: 'rgba(59, 130, 246, 0.15)', borderColor: 'transparent', pointRadius: 0 });
+                chartObjects.bo.data.datasets.push({ label: 'Mean Prediction (Surrogate)', data: mean, borderColor: 'rgb(59, 130, 246)', borderWidth: 2.5, pointRadius: 0, tension: 0.4 });
+                chartObjects.bo.data.datasets.push({ label: 'Model Uncertainty', data: mean.map((m, i) => m - uncertainty[i]), fill: '-1', backgroundColor: 'rgba(59, 130, 246, 0.15)', borderColor: 'transparent', pointRadius: 0 });
+                chartObjects.bo.data.datasets.push({ type: 'scatter', label: 'Evaluated Points', data: boObserved.map(p => ({ x: p.x, y: p.y })), backgroundColor: '#ec4899', borderColor: '#be185d', pointRadius: 6, pointHoverRadius: 8 });
+            }
+            chartObjects.bo.update();
+        }
+        function runBoTrial() {
+            let next_x; const boXLabels = chartObjects.bo.data.labels;
+            const trueBoFn = x => 0.85 + 0.13 * Math.exp(-Math.pow(x - 80, 2) / 3000);
+            if (boObserved.length < 2) next_x = boXLabels[Math.floor(Math.random() * boXLabels.length)]; else {
+                const { mean, uncertainty } = calculateSurrogate(boXLabels, boObserved, 0.8, 0.2); const kappa = 2.0; const acq = mean.map((m, i) => m + kappa * uncertainty[i]);
+                const maxAcq = Math.max(...acq); next_x = boXLabels[acq.indexOf(maxAcq)];
+            }
+            const new_y = trueBoFn(next_x); boObserved.push({ x: next_x, y: new_y }); boTrialCount++;
+            if (new_y > boBest.y) boBest = { x: next_x, y: new_y }; updateBoChart();
+        }
+        document.getElementById('runBoBtn').addEventListener('click', runBoTrial);
+        document.getElementById('resetBoBtn').addEventListener('click', initializeBoChart);
+        
+        // --- FEATURE IMPORTANCE CHART ---
+        function initializeFeatureImportanceChart() {
+             if (chartObjects.fi) chartObjects.fi.destroy();
+             const fiCtx = document.getElementById('featureImportanceChart').getContext('2d');
+             chartObjects.fi = new Chart(fiCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Enzyme Dosage', 'Consistency Idx.', 'Extractives', 'Lignin', 'Hemicellulose', 'Transmittance', 'Cationic Demand', 'HPH Energy'],
+                    datasets: [{
+                        label: 'Importance for Aspect Ratio',
+                        data: [0.35, 0.20, 0.15, 0.10, 0.05, 0.03, 0.02, 0.1],
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgb(59, 130, 246)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Importance for Yield',
+                        data: [0.01, 0.01, 0.01, 0.01, 0.01, 0.90, 0.04, 0.01],
+                        backgroundColor: 'rgba(236, 72, 153, 0.7)',
+                        borderColor: 'rgb(236, 72, 153)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', responsive: true,
+                    plugins: { legend: { position: 'top' }, title: { display: false } },
+                    scales: { x: { stacked: true, title: {display: true, text: 'Relative Feature Importance'} }, y: { stacked: true } }
+                }
+             });
+        }
+        
+        initializeAllCharts();
+    });
+    </script>
+</body>
+</html>
